@@ -1,51 +1,25 @@
 {% extends "base.html" %}
+{% set nav="container" %}
 
 {% block main %}
 
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        {{ container }}
-        <h1 class="page-header">Container: {{ container.Name }}</h1>
+        <h1 class="page-header">{{ container.Name }}</h1>
 
-        <!--
-        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-        650a2aa2b920        ubuntu:latest       "/bin/bash"         6 hours ago         Up 6 hours                              drunk_wright
-        -->
-        <!--
-        <h2 class="sub-header">Current containers</h2>
+        <h3>{{ container.Id }}</h3>
         <div class="table-responsive">
             <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Container id</th>
-                    <th>Image</th>
-                    <th>Command</th>
-                    <th>Created</th>
-                    <th>Status</th>
-                    <th>Ports</th>
-                    <th>Names</th>
-                </tr>
-                </thead>
                 <tbody>
-                {% for container in containers %}
+                {% for arg in container %}
                     <tr>
-                        <td>
-                            <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
-                                {{ container.Id|truncate(16, True) }}
-                            </a>
-                        </td>
-                        <td>{{ container.Image }}</td>
-                        <td>{{ container.Command }}</td>
-                        <td>{{ container.Created }}</td>
-                        <td>{{ container.Status }}</td>
-                        <td>{{ container.Ports }}</td>
-                        <td>{{ container.Names|first() }}</td>
+                        <td>{{ arg }}</td>
+                        <td>{{ container[arg] }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-        -->
+
     </div>
 
 {% endblock %}

@@ -1,6 +1,7 @@
+from docker import Client
 import os
 
-from flask import Flask, url_for, redirect, send_from_directory, json
+from flask import Flask, url_for, redirect, send_from_directory, json, render_template
 
 from apps.image.image import image
 from apps.container.container import container
@@ -11,11 +12,13 @@ application = app = Flask(__name__)
 app.register_blueprint(image, url_prefix="/images")
 app.register_blueprint(container, url_prefix="/containers")
 
+docker_client = Client(base_url="unix://var/run/docker.sock")
+
 
 @app.errorhandler(404)
 def not_found(error):
     print error
-    return redirect(url_for("home"))
+    return redirect(url_for("overview"))
 
 
 @app.errorhandler(500)
@@ -25,8 +28,10 @@ def server_error(error):
 
 
 @app.route("/")
-def home():
-    return redirect(url_for("image.list_images"))
+def overview():
+    version = docker_client.version()
+    info = docker_client.info()
+    return render_template("overview.html", version=version, info=info)
 
 
 @app.route("/about")

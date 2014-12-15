@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set nav="container" %}
 
 {% block main %}
 
@@ -58,7 +59,7 @@
                         <td>{{ container.Image }}</td>
                         <td>{{ container.Command }}</td>
                         <td>{{ container.Created }}</td>
-                        <td>{{ container.Status }}</td>
+                        <td class="text-success">{{ container.Status }}</td>
                         <td>{{ container.Ports }}</td>
                         <td>{{ container.Names|first() }}</td>
                     </tr>
