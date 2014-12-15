@@ -1,12 +1,16 @@
-from flask import Blueprint
+import json
+from flask import Blueprint, render_template
+from docker import Client
 
 image = Blueprint("image", __name__)
+docker_client = Client(base_url="unix://var/run/docker.sock")
 
 
 # List images
 @image.route("/images", methods=["GET"])
 def list_images():
-    return 501
+    images = docker_client.images()
+    return render_template("image/list.html", images=images)
 
 
 # Show image by id
