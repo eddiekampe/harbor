@@ -52,7 +52,11 @@
                     <tr>
                         <td>{{ image.RepoTags }}</td>
                         <td>{{ image.RepoTags }}</td>
-                        <td>{{ image.Id }}</td>
+                        <td>
+                            <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
+                                {{ image.Id|truncate(16, True) }}
+                            </a>
+                        </td>
                         <td>{{ image.Created }}</td>
                         <td>{{ image.VirtualSize }}</td>
                     </tr>

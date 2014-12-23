@@ -9,7 +9,7 @@ docker_client = Client(base_url="unix://var/run/docker.sock")
 # List containers
 @container.route("/", methods=["GET"])
 def list_containers():
-    containers = docker_client.containers()
+    containers = docker_client.containers(all=True)
     return render_template("container/list.html", containers=containers)
 
 
