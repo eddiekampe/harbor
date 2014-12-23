@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% set nav="container" %}
 
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li><a href="{{ url_for("container.list_containers") }}">Containers</a></li>
+        <li class="active">{{ container.Id }}</li>
+    </ul>
+
+{% endblock %}
+
 {% block main %}
 
     <h1 class="page-header">{{ container.Name }}</h1>

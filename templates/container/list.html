@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% set nav="container" %}
 
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li class="active">Containers</li>
+    </ul>
+
+{% endblock %}
+
 {% block main %}
 
     <h1 class="page-header">Containers</h1>
@@ -32,6 +41,11 @@
     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
     650a2aa2b920        ubuntu:latest       "/bin/bash"         6 hours ago         Up 6 hours                              drunk_wright
     -->
+
+    <h2 class="sub-header">Create new container</h2>
+    <div>
+
+    </div>
 
     <h2 class="sub-header">Containers</h2>
     <div class="table-responsive">

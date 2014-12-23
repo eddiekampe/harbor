@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% set nav="image" %}
 
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li class="active">Images</li>
+    </ul>
+
+{% endblock %}
+
 {% block main %}
 
     <h1 class="page-header">Images</h1>
