@@ -3,70 +3,72 @@
 
 {% block main %}
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Containers</h1>
+    <h1 class="page-header">Containers</h1>
 
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-                <img src="//holdr.se/danbo/200/200/1" class="img-responsive" alt="Generic placeholder thumbnail">
-                <h4>Label</h4>
-                <span class="text-muted">Container 1</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-                <img src="//holdr.se/danbo/200/200/2" class="img-responsive" alt="Generic placeholder thumbnail">
-                <h4>Label</h4>
-                <span class="text-muted">Container 2</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-                <img src="//holdr.se/danbo/200/200/3" class="img-responsive" alt="Generic placeholder thumbnail">
-                <h4>Label</h4>
-                <span class="text-muted">Container 3</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-                <img src="//holdr.se/danbo/200/200/4" class="img-responsive" alt="Generic placeholder thumbnail">
-                <h4>Label</h4>
-                <span class="text-muted">Container 4</span>
-            </div>
+    <div class="row placeholders">
+        <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="//holdr.se/danbo/200/200/1" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Container 1</span>
         </div>
+        <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="//holdr.se/danbo/200/200/2" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Container 2</span>
+        </div>
+        <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="//holdr.se/danbo/200/200/3" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Container 3</span>
+        </div>
+        <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="//holdr.se/danbo/200/200/4" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Container 4</span>
+        </div>
+    </div>
 
-        <!--
-        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-        650a2aa2b920        ubuntu:latest       "/bin/bash"         6 hours ago         Up 6 hours                              drunk_wright
-        -->
+    <!--
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+    650a2aa2b920        ubuntu:latest       "/bin/bash"         6 hours ago         Up 6 hours                              drunk_wright
+    -->
 
-        <h2 class="sub-header">Current containers</h2>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
+    <h2 class="sub-header">Containers</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Container id</th>
+                <th>Image</th>
+                <th>Command</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th>Ports</th>
+                <th>Names</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for container in containers %}
                 <tr>
-                    <th>Container id</th>
-                    <th>Image</th>
-                    <th>Command</th>
-                    <th>Created</th>
-                    <th>Status</th>
-                    <th>Ports</th>
-                    <th>Names</th>
+                    <td>
+                        <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
+                            {{ container.Id|truncate(16, True) }}
+                        </a>
+                    </td>
+                    <td>{{ container.Image }}</td>
+                    <td>{{ container.Command }}</td>
+                    <td>{{ container.Created }}</td>
+                    <td class="text-success">{{ container.Status }}</td>
+                    <td>{{ container.Ports }}</td>
+                    <td>{{ container.Names|first() }}</td>
+                    <td>
+                        <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">Delete</a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for container in containers %}
-                    <tr>
-                        <td>
-                            <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
-                                {{ container.Id|truncate(16, True) }}
-                            </a>
-                        </td>
-                        <td>{{ container.Image }}</td>
-                        <td>{{ container.Command }}</td>
-                        <td>{{ container.Created }}</td>
-                        <td class="text-success">{{ container.Status }}</td>
-                        <td>{{ container.Ports }}</td>
-                        <td>{{ container.Names|first() }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}

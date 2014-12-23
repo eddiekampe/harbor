@@ -3,23 +3,20 @@
 
 {% block main %}
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">{{ image.Name }}</h1>
+    <h1 class="page-header">{{ image.Name }}</h1>
 
-        <h3>{{ image.Id }}</h3>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tbody>
-                {% for arg in image %}
-                    <tr>
-                        <td>{{ arg }}</td>
-                        <td>{{ image[arg] }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
+    <h3>{{ image.Id }}</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            {% for arg in image %}
+                <tr>
+                    <td>{{ arg }}</td>
+                    <td>{{ image[arg] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}
