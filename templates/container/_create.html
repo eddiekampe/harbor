@@ -1,0 +1,38 @@
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">New container</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="newContainer" class="form-horizontal" method="POST" action="{{ url_for("container.create_container") }}">
+                    {# Name #}
+                    <div class="form-group">
+                        <label for="inputName" class="col-lg-2 control-label">Name</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" name="inputName" placeholder="foobar">
+                        </div>
+                    </div>
+                    {# Image #}
+                    <div class="form-group">
+                        <label for="image" class="col-lg-2 control-label">Image</label>
+                        <div class="col-lg-10">
+                            <select class="form-control" name="image">
+                            {% for image in images %}
+                                <option value="{{ image.RepoTags[0] }}">{{ image.RepoTags[0] }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" form="newContainer" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

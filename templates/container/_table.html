@@ -1,0 +1,41 @@
+{#
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+    650a2aa2b920        ubuntu:latest       "/bin/bash"         6 hours ago         Up 6 hours                              drunk_wright
+#}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Container id</th>
+            <th>Image</th>
+            <th>Command</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th>Ports</th>
+            <th>Names</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for container in containers %}
+            <tr>
+                <td>
+                    <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
+                        {{ container.Id|truncate(16, True) }}
+                    </a>
+                </td>
+                <td>{{ container.Image }}</td>
+                <td>{{ container.Command }}</td>
+                <td>{{ container.Created }}</td>
+                <td class="text-success">{{ container.Status }}</td>
+                <td>{{ container.Ports }}</td>
+                <td>{{ container.Names|first() }}</td>
+                <td>
+                    <a href="{{ url_for("container.start_container", container_id=container_id) }}" class="label label-info">Start</a>
+                    <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
