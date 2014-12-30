@@ -52,10 +52,10 @@
                     <a href="{{ url_for("overview") }}">Overview <span class="sr-only">(current)</span></a>
                 </li>
                 <li{% if nav == "container" %} class="active"{% endif %}>
-                    <a href="{{ url_for("container.list_containers") }}">Containers</a>
+                    <a href="{{ url_for("container.list_containers") }}">Containers <span class="badge">{{ num_containers }}</span></a>
                 </li>
                 <li{% if nav == "image" %} class="active"{% endif %}>
-                    <a href="{{ url_for("image.list_images") }}">Images</a>
+                    <a href="{{ url_for("image.list_images") }}">Images <span class="badge">{{ num_images }}</span></a>
                 </li>
             </ul>
 
