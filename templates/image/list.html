@@ -13,65 +13,16 @@
 {% block main %}
 
     <h1 class="page-header">Images</h1>
+    {#
+        TODO: Add statistics, remove pagination duplicate
+    #}
+    {% include "image/_pagination.html" with context %}
+    {% include "image/_table.html" with context %}
 
-    <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/1" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 1</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/2" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 2</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/3" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 3</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/4" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 4</span>
-        </div>
-    </div>
+{% endblock %}
 
-    <h2 class="sub-header">Current images</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Repository</th>
-                <th>Tag</th>
-                <th>Image id</th>
-                <th>Created</th>
-                <th>Virtual size</th>
-            </tr>
-            </thead>
-            <tbody>
+{% block footer_script %}
 
-            <!--
-            REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-            ubuntu              latest              9bd07e480c5b        10 days ago         192.7 MB
-            -->
-
-            {% for image in images %}
-                <tr>
-                    <td>{{ image.RepoTags }}</td>
-                    <td>{{ image.RepoTags }}</td>
-                    <td>
-                        <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
-                            {{ image.Id|truncate(16, True) }}
-                        </a>
-                    </td>
-                    <td>{{ image.Created }}</td>
-                    <td>{{ image.VirtualSize }}</td>
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
+    <script src="/static/js/image.js"></script>
 
 {% endblock %}
