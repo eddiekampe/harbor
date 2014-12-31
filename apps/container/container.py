@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 
 container = Blueprint("container", __name__)
 
+SUCCESS = "success"
 
 # List containers
 @container.route("/", methods=["GET"])
@@ -24,7 +25,7 @@ def inspect_container(container_id):
 @container.route("/<container_id>/delete", methods=["GET"])
 def delete_container(container_id):
     feedback = g.docker_client.remove_container(container_id)
-    print feedback
+    flash(feedback, SUCCESS)
     return redirect(url_for("container.list_containers"))
 
 
@@ -32,7 +33,7 @@ def delete_container(container_id):
 @container.route("/<container_id>/start", methods=["GET"])
 def start_container(container_id):
     feedback = g.docker_client.start(container_id)
-    print feedback
+    flash(feedback, SUCCESS)
     return redirect(url_for("container.list_containers"))
 
 
@@ -46,6 +47,6 @@ def create_container():
 
     if None not in [image, container_name]:
         new_container = g.docker_client.create_container(image=image, name=container_name)
-        print new_container
+        flash(new_container, SUCCESS)
 
     return redirect(url_for("container.list_containers"))
