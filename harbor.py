@@ -7,7 +7,8 @@ from apps.image.image import image
 from apps.container.container import container
 
 # Setup application and config
-application = app = Flask(__name__)
+app = Flask(__name__)
+app.secret_key = "rPbY^+$EDU/:@3M"
 # Register blueprints
 app.register_blueprint(image, url_prefix="/images")
 app.register_blueprint(container, url_prefix="/containers")
