@@ -12,17 +12,32 @@
 
 {% block main %}
 
-    <h1 class="page-header">Images</h1>
+    <h1 class="page-header">Local images</h1>
     {#
         TODO: Add statistics, remove pagination duplicate
     #}
     {% include "image/_pagination.html" with context %}
     {% include "image/_table.html" with context %}
 
+    <h1 class="page-header">Online images</h1>
+    {#
+        Search online images
+    #}
+    {% include "image/_search.html" with context %}
+
 {% endblock %}
 
 {% block footer_script %}
 
-    <script src="/static/js/image.js"></script>
+    <script src="/static/js/harbor.image.search.js"></script>
+    <script type="text/javascript">
+        // Setup search functionality
+        Harbor.Image.Search.Initialize({
+            $searchElm: $("#searchImage"),
+            $clearElm: $("#clearImage"),
+            $inputElm: $("[name=imageName]"),
+            $resultElm: $(".list-group")
+        });
+    </script>
 
 {% endblock %}
