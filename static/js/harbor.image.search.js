@@ -113,7 +113,32 @@ Harbor.Image.Search = function ($) {
                 )
             }
 
+            Harbor.Image.Search.BindItems();
+
             console.log(result);
+        },
+
+        /**
+         * Bind items to react on click event.
+         * Upon click, pull the image from the registry
+         * @constructor
+         */
+        BindItems: function () {
+
+            this.settings.$resultElm.children().on("click", function (e) {
+                e.preventDefault();
+
+                var image = $(this).data("image"),
+                    url = $(this).attr("href");
+
+                console.log(image);
+
+                $.post(url, { image: image }, function (data, status) {
+                    console.log(status);
+                    console.log(data);
+                    console.log("Download complete");
+                });
+            });
         },
 
         Error: function (message) {
