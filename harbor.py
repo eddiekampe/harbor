@@ -62,4 +62,4 @@ def get_environment():
 
 
 if __name__ == "__main__":
-    app.run(use_reloader=True)
+    app.run(use_reloader=True, threaded=True)

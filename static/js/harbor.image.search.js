@@ -100,16 +100,14 @@ Harbor.Image.Search = function ($) {
                         .attr("href", this.settings.pullUrl)
                         .attr("data-image", result[i].name)
                         .attr("class", "list-group-item")
-                        .append(
-                            $("<h4>")
-                                .attr("class", "list-group-item-heading")
-                                .text(result[i].name)
-                        )
-                        .append(
-                            $("<p>")
-                                .attr("class", "list-group-item-text")
-                                .text(result[i].description)
-                        )
+                        .append($("<h4>")
+                            .attr("class", "list-group-item-heading")
+                            .text(result[i].name))
+                        .append($("<p>")
+                            .attr("class", "list-group-item-text")
+                            .text(result[i].description))
+                        .append($("<div>")
+                            .attr("class", "alert alert-success"))
                 )
             }
 
@@ -125,19 +123,29 @@ Harbor.Image.Search = function ($) {
          */
         BindItems: function () {
 
+            var self = this;
             this.settings.$resultElm.children().on("click", function (e) {
                 e.preventDefault();
 
                 var image = $(this).data("image"),
-                    url = $(this).attr("href");
+                    url = $(this).attr("href"),
+                    fullUrl = encodeURI(self.settings.pullUrl + "?image=" + image);
+
+                var source = new EventSource(fullUrl);
+                source.onmessage = function (event) {
+                    console.log(event);
+                    var parsed = JSON.parse(event.data);
+
+                    if (parsed.status == "COMPLETE") {
+                        console.log("Closing");
+                        source.close();
+                    } else {
+                        $("[data-image='jerrycheung/ngnix']").find(".alert").text(parsed);
+                        console.log(parsed);
+                    }
+                };
 
                 console.log(image);
-
-                $.post(url, { image: image }, function (data, status) {
-                    console.log(status);
-                    console.log(data);
-                    console.log("Download complete");
-                });
             });
         },
 

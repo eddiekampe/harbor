@@ -1,9 +1,10 @@
 import json
-from flask import Blueprint, render_template, redirect, url_for, g, flash, request
+from flask import Blueprint, render_template, redirect, url_for, g, flash, request, Response
 
 image = Blueprint("image", __name__)
 
 SUCCESS = "success"
+
 
 # List images
 @image.route("/", methods=["GET"])
@@ -38,12 +39,25 @@ def search_image():
 
 
 # Pull image
-@image.route("/pull", methods=["POST"])
+@image.route("/pull", methods=["GET"])
 def pull_image():
 
-    image_name = request.form["image"]
     # TODO: Validate input
-    image_stream = g.docker_client.pull(image_name, stream=True)
-    # TODO: Stream the download, add progress bar
+    image_name = request.args["image"]
+    print image_name
 
-    return "Image download complete"
+    def download_stream():
+
+        # TODO: See if we can reuse other client
+        from docker import Client
+        docker_client = Client(base_url="unix://var/run/docker.sock")
+
+        for data in docker_client.pull(image_name, stream=True):
+            print data
+            yield "data: {}\n\n".format(json.dumps(data))
+
+        yield "data: {}\n\n".format(json.dumps({
+            "status": "COMPLETE"
+        }))
+
+    return Response(download_stream(), mimetype="text/event-stream")
