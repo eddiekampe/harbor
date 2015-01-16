@@ -68,10 +68,12 @@ Harbor.Image.Search = function ($) {
             $(".loader").show();
 
             var imageName = this.settings.$inputElm.val(),
-                searchUrl = this.settings.searchUrl;
+                url = this.settings.searchUrl,
+                fullUrl = encodeURI(url + "?term=" + imageName);
 
-            $.post(searchUrl, { term: imageName }, function (data, status) {
+            $.get(fullUrl, function (data, status) {
 
+                console.log("Search: " + status);
                 data = JSON.parse(data);
                 Harbor.Image.Search.ListResult(data);
             });
@@ -106,14 +108,9 @@ Harbor.Image.Search = function ($) {
                         .append($("<p>")
                             .attr("class", "list-group-item-text")
                             .text(result[i].description))
-                        .append($("<div>")
-                            .attr("class", "alert alert-success"))
                 )
             }
-
             Harbor.Image.Search.BindItems();
-
-            console.log(result);
         },
 
         /**
@@ -126,27 +123,33 @@ Harbor.Image.Search = function ($) {
             var self = this;
             this.settings.$resultElm.children().on("click", function (e) {
                 e.preventDefault();
-
-                var image = $(this).data("image"),
-                    url = $(this).attr("href"),
-                    fullUrl = encodeURI(self.settings.pullUrl + "?image=" + image);
-
-                var source = new EventSource(fullUrl);
-                source.onmessage = function (event) {
-                    console.log(event);
-                    var parsed = JSON.parse(event.data);
-
-                    if (parsed.status == "COMPLETE") {
-                        console.log("Closing");
-                        source.close();
-                    } else {
-                        $("[data-image='jerrycheung/ngnix']").find(".alert").text(parsed);
-                        console.log(parsed);
-                    }
-                };
-
-                console.log(image);
+                Harbor.Image.Search.ShowProgress($(this));
             });
+        },
+
+        ShowProgress: function ($itemElm) {
+
+            var image = $itemElm.data("image"),
+                url = $itemElm.attr("href"),
+                fullUrl = encodeURI(url + "?image=" + image),
+                source = new EventSource(fullUrl);
+
+            $("[data-image='" + image + "']").append(
+                $("<div>").attr("class", "alert alert-success")
+            );
+
+            source.onmessage = function (event) {
+
+                var parsed = JSON.parse(event.data);
+
+                if (parsed.status == "COMPLETE") {
+                    console.log("Closing");
+                    source.close();
+                } else {
+                    $("[data-image='" + image + "']").find(".alert").text(parsed);
+                }
+            };
+            console.log(image);
         },
 
         Error: function (message) {
