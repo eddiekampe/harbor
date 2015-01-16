@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, g, flash, reque
 image = Blueprint("image", __name__)
 
 SUCCESS = "success"
+WARNING = "warning"
 
 
 # List images
@@ -23,7 +24,11 @@ def delete_image(image_id):
     Delete image
     """
     feedback = g.docker_client.remove_image(image_id)
-    flash(feedback, SUCCESS)
+    if feedback is None:
+        flash("Image {} was successfully deleted!".format(image_id), SUCCESS)
+    else:
+        flash(feedback, WARNING)
+
     return redirect(url_for("image.list_images"))
 
 

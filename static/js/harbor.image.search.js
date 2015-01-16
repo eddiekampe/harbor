@@ -127,6 +127,12 @@ Harbor.Image.Search = function ($) {
             });
         },
 
+        /**
+         * Subscribe to the download process.
+         * Inform user about progress
+         * @param $itemElm Element that should be updated
+         * @constructor
+         */
         ShowProgress: function ($itemElm) {
 
             var image = $itemElm.data("image"),
@@ -134,19 +140,22 @@ Harbor.Image.Search = function ($) {
                 fullUrl = encodeURI(url + "?image=" + image),
                 source = new EventSource(fullUrl);
 
-            $("[data-image='" + image + "']").append(
+            // Append progress bar
+            $itemElm.append(
                 $("<div>").attr("class", "alert alert-success")
             );
 
+            // Register event listener to Server Sent Events (SSE)
+            // More information about the technique can be found here:
+            // http://www.w3schools.com/htmL/html5_serversentevents.asp
             source.onmessage = function (event) {
 
                 var parsed = JSON.parse(event.data);
-
                 if (parsed.status == "COMPLETE") {
                     console.log("Closing");
                     source.close();
                 } else {
-                    $("[data-image='" + image + "']").find(".alert").text(parsed);
+                    $itemElm.find(".alert").text(parsed);
                 }
             };
             console.log(image);
