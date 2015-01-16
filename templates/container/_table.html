@@ -26,7 +26,7 @@
                 </td>
                 <td>{{ container.Image }}</td>
                 <td>{{ container.Command }}</td>
-                <td>{{ container.Created }}</td>
+                <td>{{ container.Created | date_string }}</td>
                 <td class="text-success">{{ container.Status }}</td>
                 <td>{{ container.Ports }}</td>
                 <td>{{ container.Names|first() }}</td>

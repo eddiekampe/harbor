@@ -1,0 +1,28 @@
+<div class="form-group">
+    <div class="col-lg-4">
+        {#
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Information</h3>
+                </div>
+                <div class="panel-body">The list below is an excerpt from <a href="https://registry.hub.docker.com/" target="_blank">Docker registry</a>. Please refer to the site for additional images.</div>
+            </div>
+            #}
+        <label class="control-label">Search Docker registry</label>
+        <div class="input-group">
+            <input name="imageName" type="text" class="form-control" placeholder="Enter image">
+            <span class="input-group-btn">
+                <button id="searchImage" class="btn btn-primary" type="button">Search</button>
+                <button id="clearImage" class="btn btn-danger" type="button">Clear</button>
+            </span>
+        </div>
+    </div>
+</div>
+{# Search results #}
+
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="loader" style="font-size: 12px; display: none">Loading...</div>
+        <div class="list-group"></div>
+    </div>
+</div>

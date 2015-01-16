@@ -1,0 +1,36 @@
+{#
+    REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+    ubuntu              latest              9bd07e480c5b        10 days ago         192.7 MB
+#}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Repository</th>
+            <th>Tag</th>
+            <th>Image id</th>
+            <th>Created</th>
+            <th>Virtual size</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for image in images %}
+            <tr>
+                <td>{{ image.RepoTags }}</td>
+                <td>{{ image.RepoTags }}</td>
+                <td>
+                    <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
+                        {{ image.Id|truncate(16, True) }}
+                    </a>
+                </td>
+                <td>{{ image.Created | date_string }}</td>
+                <td>{{ image.VirtualSize | b_to_mb }}</td>
+                <td>
+                    <a href="{{ url_for("image.delete_image", image_id=image.Id) }}" class="label label-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

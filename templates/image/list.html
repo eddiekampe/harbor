@@ -12,66 +12,32 @@
 
 {% block main %}
 
-    <h1 class="page-header">Images</h1>
+    <h1 class="page-header">Local images</h1>
+    {#
+        TODO: Add statistics, remove pagination duplicate
+    #}
+    {% include "image/_pagination.html" with context %}
+    {% include "image/_table.html" with context %}
 
-    <div class="row placeholders">
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/1" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 1</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/2" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 2</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/3" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 3</span>
-        </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
-            <img src="//holdr.se/danbo/200/200/4" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Container 4</span>
-        </div>
-    </div>
+    <h1 class="page-header">Online images</h1>
+    {#
+        Search online images
+    #}
+    {% include "image/_search.html" with context %}
 
-    <h2 class="sub-header">Current images</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Repository</th>
-                <th>Tag</th>
-                <th>Image id</th>
-                <th>Created</th>
-                <th>Virtual size</th>
-            </tr>
-            </thead>
-            <tbody>
+{% endblock %}
 
-            <!--
-            REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-            ubuntu              latest              9bd07e480c5b        10 days ago         192.7 MB
-            -->
+{% block footer_script %}
 
-            {% for image in images %}
-                <tr>
-                    <td>{{ image.RepoTags }}</td>
-                    <td>{{ image.RepoTags }}</td>
-                    <td>
-                        <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
-                            {{ image.Id|truncate(16, True) }}
-                        </a>
-                    </td>
-                    <td>{{ image.Created }}</td>
-                    <td>{{ image.VirtualSize }}</td>
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
+    <script src="/static/js/harbor.image.search.js"></script>
+    <script type="text/javascript">
+        // Setup search functionality
+        Harbor.Image.Search.Initialize({
+            $searchElm: $("#searchImage"),
+            $clearElm: $("#clearImage"),
+            $inputElm: $("[name=imageName]"),
+            $resultElm: $(".list-group")
+        });
+    </script>
 
 {% endblock %}

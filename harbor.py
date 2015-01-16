@@ -1,3 +1,4 @@
+import traceback
 from docker import Client
 import os
 
@@ -5,6 +6,7 @@ from flask import Flask, url_for, redirect, send_from_directory, json, render_te
 
 from apps.image.image import image
 from apps.container.container import container
+from lib import filters
 
 # Setup application and config
 app = Flask(__name__)
@@ -12,6 +14,8 @@ app.secret_key = "rPbY^+$EDU/:@3M"
 # Register blueprints
 app.register_blueprint(image, url_prefix="/images")
 app.register_blueprint(container, url_prefix="/containers")
+# Register filters
+filters.register_all(app)
 
 
 @app.before_request
@@ -27,6 +31,7 @@ def not_found(error):
 
 @app.errorhandler(500)
 def server_error(error):
+    print traceback.print_stack()
     print error
     return error  # redirect(url_for("home"))
 
@@ -62,4 +67,4 @@ def get_environment():
 
 
 if __name__ == "__main__":
-    app.run(use_reloader=True)
+    app.run(use_reloader=True, threaded=True)

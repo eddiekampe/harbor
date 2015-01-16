@@ -3,6 +3,8 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 container = Blueprint("container", __name__)
 
 SUCCESS = "success"
+WARNING = "warning"
+
 
 # List containers
 @container.route("/", methods=["GET"])
@@ -24,8 +26,13 @@ def inspect_container(container_id):
 # Delete container by id
 @container.route("/<container_id>/delete", methods=["GET"])
 def delete_container(container_id):
+
     feedback = g.docker_client.remove_container(container_id)
-    flash(feedback, SUCCESS)
+    if feedback is None:
+        flash("Container {} was successfully deleted!".format(container_id), SUCCESS)
+    else:
+        flash(feedback, WARNING)
+
     return redirect(url_for("container.list_containers"))
 
 
