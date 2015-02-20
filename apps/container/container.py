@@ -39,8 +39,26 @@ def delete_container(container_id):
 # Start container by id
 @container.route("/<container_id>/start", methods=["GET"])
 def start_container(container_id):
+
     feedback = g.docker_client.start(container_id)
-    flash(feedback, SUCCESS)
+    if feedback is None:
+        flash("Container {} was successfully started".format(container_id), SUCCESS)
+    else:
+        flash(feedback, WARNING)
+
+    return redirect(url_for("container.list_containers"))
+
+
+# Stop container by id
+@container.route("/<container_id>/stop", methods=["GET"])
+def stop_container(container_id):
+
+    feedback = g.docker_client.stop(container_id)
+    if feedback is None:
+        flash("Container {} was successfully stopped".format(container_id), SUCCESS)
+    else:
+        flash(feedback, WARNING)
+
     return redirect(url_for("container.list_containers"))
 
 
