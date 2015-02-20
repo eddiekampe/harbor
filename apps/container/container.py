@@ -67,11 +67,19 @@ def stop_container(container_id):
 def create_container():
 
     # TODO: Add more logic
-    container_name = request.form["inputName"]
+    container_name = request.form["container_name"]
     image = request.form["image"]
+    action = request.form["action"]
 
     if None not in [image, container_name]:
-        new_container = g.docker_client.create_container(image=image, name=container_name)
-        flash(new_container, SUCCESS)
+        container_id = g.docker_client.create_container(image=image, name=container_name)
+        flash("Container {} was successfully created".format(container_id), SUCCESS)
+
+        if action == "create_and_start":
+            feedback = g.docker_client.start(container_id)
+            if feedback is None:
+                flash("Container {} was successfully started".format(container_id), SUCCESS)
+            else:
+                flash(feedback, WARNING)
 
     return redirect(url_for("container.list_containers"))
