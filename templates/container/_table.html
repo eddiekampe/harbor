@@ -31,7 +31,8 @@
                 <td>{{ container.Ports }}</td>
                 <td>{{ container.Names|first() }}</td>
                 <td>
-                    <a href="{{ url_for("container.start_container", container_id=container_id) }}" class="label label-info">Start</a>
+                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-info">Start</a>
+                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-warning">Stop</a>
                     <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">Delete</a>
                 </td>
             </tr>
