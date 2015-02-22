@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label for="container_name" class="col-lg-2 control-label">Name</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control" name="container_name" placeholder="foobar">
+                            <input type="text" class="form-control" name="container_name" placeholder="Leave empty for a random name">
                         </div>
                     </div>
                     {# Image #}
@@ -21,9 +21,20 @@
                         <label for="image" class="col-lg-2 control-label">Image</label>
                         <div class="col-lg-10">
                             <select class="form-control" name="image">
-                            {% for image in images %}
-                                <option value="{{ image.RepoTags[0] }}">{{ image.RepoTags[0] }}</option>
-                            {% endfor %}
+                                {% for image in images %}
+                                    <option value="{{ image.RepoTags | first }}">{{ image.RepoTags | first }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {# NUmber of instances #}
+                    <div class="form-group">
+                        <label for="scale" class="col-lg-2 control-label">Scale</label>
+                        <div class="col-lg-10">
+                            <select class="form-control" name="scale">
+                                {% for index in range(5) %}
+                                    <option>{{ index + 1 }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
