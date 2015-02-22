@@ -7,12 +7,12 @@
         <thead>
         <tr>
             <th>Container id</th>
-            <th>Image</th>
+            <th>Names</th>
             <th>Command</th>
+            <th>Image</th>
             <th>Created</th>
             <th>Status</th>
             <th>Ports</th>
-            <th>Names</th>
             <th></th>
         </tr>
         </thead>
@@ -24,16 +24,35 @@
                         {{ container.Id|truncate(16, True) }}
                     </a>
                 </td>
-                <td>{{ container.Image }}</td>
+                <td>{{ container.Names | first }}</td>
                 <td>{{ container.Command }}</td>
+                <td>{{ container.Image }}</td>
                 <td>{{ container.Created | date_string }}</td>
                 <td class="text-success">{{ container.Status }}</td>
-                <td>{{ container.Ports }}</td>
-                <td>{{ container.Names|first() }}</td>
                 <td>
-                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-info">Start</a>
-                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-warning">Stop</a>
-                    <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">Delete</a>
+                    {% for port in container.Ports %}
+                        {% if "PublicPort" in port %}
+                            <div>
+                                <a href="http://{{ port["IP"] }}:{{ port["PublicPort"] }}">
+                                    {{ port["Type"] }}:{{ port["PrivatePort"] }} -> {{ port["IP"] }}:{{ port["PublicPort"] }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-info">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        Start
+                    </a><br>
+                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-warning">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        Stop
+                    </a><br>
+                    <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        Delete
+                    </a>
                 </td>
             </tr>
         {% endfor %}

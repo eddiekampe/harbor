@@ -6,9 +6,8 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Repository</th>
-            <th>Tag</th>
             <th>Image id</th>
+            <th>Repository:Tag</th>
             <th>Created</th>
             <th>Virtual size</th>
             <th></th>
@@ -17,13 +16,12 @@
         <tbody>
         {% for image in images %}
             <tr>
-                <td>{{ image.RepoTags }}</td>
-                <td>{{ image.RepoTags }}</td>
                 <td>
                     <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
                         {{ image.Id|truncate(16, True) }}
                     </a>
                 </td>
+                <td>{{ image.RepoTags | first }}</td>
                 <td>{{ image.Created | date_string }}</td>
                 <td>{{ image.VirtualSize | b_to_mb }}</td>
                 <td>
