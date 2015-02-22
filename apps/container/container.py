@@ -70,16 +70,24 @@ def create_container():
     container_name = request.form["container_name"]
     image = request.form["image"]
     action = request.form["action"]
+    scale = int(request.form["scale"])
 
-    if None not in [image, container_name]:
-        container_id = g.docker_client.create_container(image=image, name=container_name)
-        flash("Container {} was successfully created".format(container_id), SUCCESS)
+    if None not in [image, container_name, scale]:
 
-        if action == "create_and_start":
-            feedback = g.docker_client.start(container_id)
-            if feedback is None:
-                flash("Container {} was successfully started".format(container_id), SUCCESS)
+        for instance in range(scale):
+
+            if scale > 1 and container_name != "":
+                container_id = g.docker_client.create_container(image=image, name="{}-{}".format(container_name, instance + 1))
             else:
-                flash(feedback, WARNING)
+                container_id = g.docker_client.create_container(image=image)
+
+            flash("Container {} was successfully created".format(container_id), SUCCESS)
+
+            if action == "create_and_start":
+                feedback = g.docker_client.start(container_id)
+                if feedback is None:
+                    flash("Container {} was successfully started".format(container_id), SUCCESS)
+                else:
+                    flash(feedback, WARNING)
 
     return redirect(url_for("container.list_containers"))
