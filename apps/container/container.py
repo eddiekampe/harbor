@@ -1,9 +1,8 @@
+from docker.errors import APIError
 from flask import Blueprint, render_template, redirect, url_for, flash, request, g
+from lib.notification import SUCCESS, ERROR, WARNING
 
 container = Blueprint("container", __name__)
-
-SUCCESS = "success"
-WARNING = "warning"
 
 
 # List containers
@@ -26,12 +25,19 @@ def inspect_container(container_id):
 # Delete container by id
 @container.route("/<container_id>/delete", methods=["GET"])
 def delete_container(container_id):
+    """
+    Delete container
+    """
+    try:
+        feedback = g.docker_client.remove_container(container_id)
 
-    feedback = g.docker_client.remove_container(container_id)
-    if feedback is None:
-        flash("Container {} was successfully deleted!".format(container_id), SUCCESS)
-    else:
-        flash(feedback, WARNING)
+        if feedback is None:
+            flash("Container {} was successfully deleted!".format(container_id), SUCCESS)
+        else:
+            flash(feedback, WARNING)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
 
     return redirect(url_for("container.list_containers"))
 
