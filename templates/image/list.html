@@ -19,11 +19,12 @@
     {% include "image/_pagination.html" with context %}
     {% include "image/_table.html" with context %}
 
-    <h1 class="page-header">Online images</h1>
     {#
         Search online images
+
+        <h1 class="page-header">Online images</h1>
+        {% include "image/_search.html" with context %}
     #}
-    {% include "image/_search.html" with context %}
 
 {% endblock %}
 
