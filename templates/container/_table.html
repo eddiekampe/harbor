@@ -28,7 +28,13 @@
                 <td>{{ container.Command }}</td>
                 <td>{{ container.Image }}</td>
                 <td>{{ container.Created | date_string }}</td>
-                <td class="text-success">{{ container.Status }}</td>
+                {% if "Up" in container.Status %}
+                    <td class="text-success">{{ container.Status }}</td>
+                {% elif "Exited" in container.Status %}
+                    <td class="text-danger">{{ container.Status }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td>
                     {% for port in container.Ports %}
                         {% if "PublicPort" in port %}
@@ -41,11 +47,11 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-info">
+                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-success">
                         <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                         Start
                     </a><br>
-                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-warning">
+                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-info">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         Stop
                     </a><br>
