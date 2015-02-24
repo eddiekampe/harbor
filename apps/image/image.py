@@ -1,10 +1,13 @@
 import json
+from docker.errors import APIError
+
 from flask import Blueprint, render_template, redirect, url_for, g, flash, request, Response
 
 image = Blueprint("image", __name__)
 
 SUCCESS = "success"
 WARNING = "warning"
+ERROR = "danger"
 
 
 # List images
@@ -23,11 +26,16 @@ def delete_image(image_id):
     """
     Delete image
     """
-    feedback = g.docker_client.remove_image(image_id)
-    if feedback is None:
-        flash("Image {} was successfully deleted!".format(image_id), SUCCESS)
-    else:
-        flash(feedback, WARNING)
+    try:
+        feedback = g.docker_client.remove_image(image_id)
+
+        if feedback is None:
+            flash("Image {} was successfully deleted!".format(image_id), SUCCESS)
+        else:
+            flash(feedback, WARNING)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
 
     return redirect(url_for("image.list_images"))
 
