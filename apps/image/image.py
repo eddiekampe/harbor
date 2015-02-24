@@ -2,12 +2,9 @@ import json
 from docker.errors import APIError
 
 from flask import Blueprint, render_template, redirect, url_for, g, flash, request, Response
+from lib.notification import SUCCESS, ERROR, WARNING
 
 image = Blueprint("image", __name__)
-
-SUCCESS = "success"
-WARNING = "warning"
-ERROR = "danger"
 
 
 # List images

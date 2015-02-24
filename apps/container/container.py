@@ -1,11 +1,8 @@
 from docker.errors import APIError
 from flask import Blueprint, render_template, redirect, url_for, flash, request, g
+from lib.notification import SUCCESS, ERROR, WARNING
 
 container = Blueprint("container", __name__)
-
-SUCCESS = "success"
-WARNING = "warning"
-ERROR = "danger"
 
 
 # List containers
