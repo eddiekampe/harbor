@@ -47,18 +47,36 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a href="{{ url_for("container.start_container", container_id=container.Id) }}" class="label label-success">
-                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                        Start
-                    </a><br>
-                    <a href="{{ url_for("container.stop_container", container_id=container.Id) }}" class="label label-info">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                        Stop
-                    </a><br>
-                    <a href="{{ url_for("container.delete_container", container_id=container.Id) }}" class="label label-danger">
-                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-                        Delete
-                    </a>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="{{ url_for("container.start_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-play succes text-success" aria-hidden="true"></span>
+                                    Start
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("container.stop_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-off text-warning" aria-hidden="true"></span>
+                                    Stop
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("container.delete_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
+                                    Delete
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url_for("container.delete_container", container_id=container.Id) }}?force=True">
+                                    <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
+                                    Force delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
