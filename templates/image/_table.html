@@ -25,7 +25,17 @@
                 <td>{{ image.Created | date_string }}</td>
                 <td>{{ image.VirtualSize | b_to_mb }}</td>
                 <td>
-                    <a href="{{ url_for("image.delete_image", image_id=image.Id) }}" class="label label-danger">Delete</a>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="{{ url_for("image.delete_image", image_id=image.Id) }}">
+                                    <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
+                                    Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
