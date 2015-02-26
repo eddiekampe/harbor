@@ -68,6 +68,13 @@
                                     Delete
                                 </a>
                             </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url_for("container.delete_container", container_id=container.Id) }}?force=True">
+                                    <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
+                                    Force delete
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </td>
