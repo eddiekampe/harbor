@@ -27,9 +27,15 @@ def inspect_container(container_id):
 def delete_container(container_id):
     """
     Delete container
+
+    force = True/true
+        Let the user to force the delete action. Will not warn if container is running
+
     """
+    force_delete = request.args.get("force", False) in ["True", "true"]
+
     try:
-        feedback = g.docker_client.remove_container(container_id)
+        feedback = g.docker_client.remove_container(container_id, force=force_delete)
 
         if feedback is None:
             flash("Container {} was successfully deleted!".format(container_id), SUCCESS)
