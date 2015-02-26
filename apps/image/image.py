@@ -22,9 +22,15 @@ def list_images():
 def delete_image(image_id):
     """
     Delete image
+
+    force = True/true
+        Let the user to force the delete action. Will not warn if image is in use
+
     """
+    force_delete = request.args.get("force", False) in ["True", "true"]
+
     try:
-        feedback = g.docker_client.remove_image(image_id)
+        feedback = g.docker_client.remove_image(image_id, force=force_delete)
 
         if feedback is None:
             flash("Image {} was successfully deleted!".format(image_id), SUCCESS)

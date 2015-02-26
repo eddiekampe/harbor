@@ -34,6 +34,13 @@
                                     Delete
                                 </a>
                             </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url_for("image.delete_image", image_id=image.Id) }}?force=True">
+                                    <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
+                                    Force delete
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </td>
