@@ -13,20 +13,33 @@
 
 {% block main %}
 
-    <h1 class="page-header">{{ container.Name }}</h1>
+    <h3 class="page-header">{{ container.Name }}</h3>
 
-    <h3>{{ container.Id }}</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            {% for arg in container %}
-                <tr>
-                    <td>{{ arg }}</td>
-                    <td>{{ container[arg] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#info" data-toggle="tab" aria-expanded="true">Info</a></li>
+        <li class=""><a href="#logs" data-toggle="tab" aria-expanded="false">Logs</a></li>
+    </ul>
+
+    <div class="tab-content active">
+        {# Container information #}
+        <div class="tab-pane active" id="info">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    {% for arg in container %}
+                        <tr>
+                            <td>{{ arg }}</td>
+                            <td>{{ container[arg] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {# Container logs #}
+        <div class="tab-pane" id="logs">
+            <textarea>{{ logs | log_text }}</textarea>
+        </div>
     </div>
 
 {% endblock %}

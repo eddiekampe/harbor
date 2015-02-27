@@ -30,7 +30,8 @@ def inspect_container(container_id):
     """
     try:
         entry = g.docker_client.inspect_container(container_id)
-        return render_template("container/entry.html", container=entry)
+        logs = g.docker_client.logs(container_id, stdout=True, stderr=True)
+        return render_template("container/entry.html", container=entry, logs=logs)
 
     except APIError as e:
         flash(e.explanation, ERROR)
