@@ -107,3 +107,15 @@ body {
 .table-responsive {
     overflow-x: inherit;
 }
+
+/* Bogus? No css master! */
+textarea {
+    border: none Transparent;
+    overflow: auto;
+    height: 100%;
+    min-height: 700px;
+    width: 100%;
+    max-width: 100%;
+    background: #000000;
+    color: #ffffff;
+}
