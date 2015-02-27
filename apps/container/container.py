@@ -28,7 +28,6 @@ def inspect_container(container_id):
     """
     View detailed information about the container
     """
-
     try:
         entry = g.docker_client.inspect_container(container_id)
         return render_template("container/entry.html", container=entry)
@@ -42,25 +41,20 @@ def inspect_container(container_id):
 @container.route("/<container_id>/delete", methods=["GET"])
 def delete_container(container_id):
     """
-    Delete container
-
-    force = True/true
-        Let the user to force the delete action. Will not warn if container is running
-
+    Delete a container
+    :param container_id: Id of the container
+    :argument force: Let the user to force the delete action. Will not warn if container is running
+    :return:
     """
     force_delete = request.args.get("force", False) in ["True", "true"]
+    action = g.docker_client.remove_container
+    success_message = "Container {} was successfully deleted!".format(container_id)
+    args = {
+        "container": container_id,
+        "force": force_delete
+    }
 
-    try:
-        feedback = g.docker_client.remove_container(container_id, force=force_delete)
-
-        if feedback is None:
-            flash("Container {} was successfully deleted!".format(container_id), SUCCESS)
-        else:
-            flash(feedback, WARNING)
-
-    except APIError as e:
-        flash(e.explanation, ERROR)
-
+    handle_action(action, args, success_message)
     return redirect(url_for("container.list_containers"))
 
 
@@ -71,17 +65,11 @@ def start_container(container_id):
     :param container_id: Id of the container to start
     :return:
     """
-    try:
-        feedback = g.docker_client.start(container_id)
+    action = g.docker_client.start
+    success_message = "Container {} was successfully started!".format(container_id)
+    args = {"container": container_id}
 
-        if feedback is None:
-            flash("Container {} was successfully started".format(container_id), SUCCESS)
-        else:
-            flash(feedback, WARNING)
-
-    except APIError as e:
-        flash(e.explanation, ERROR)
-
+    handle_action(action, args, success_message)
     return redirect(url_for("container.list_containers"))
 
 
@@ -92,17 +80,11 @@ def pause_container(container_id):
     :param container_id: Id of the container to pause
     :return:
     """
-    try:
-        feedback = g.docker_client.pause(container_id)
+    action = g.docker_client.pause
+    success_message = "Container {} was successfully paused!".format(container_id)
+    args = {"container": container_id}
 
-        if feedback is None:
-            flash("Container {} was successfully paused".format(container_id), SUCCESS)
-        else:
-            flash(feedback, WARNING)
-
-    except APIError as e:
-        flash(e.explanation, ERROR)
-
+    handle_action(action, args, success_message)
     return redirect(url_for("container.list_containers"))
 
 
@@ -113,35 +95,26 @@ def unpause_container(container_id):
     :param container_id: Id of the container to unpause
     :return:
     """
-    try:
-        feedback = g.docker_client.unpause(container_id)
+    action = g.docker_client.unpause
+    success_message = "Container {} was successfully unpaused!".format(container_id)
+    args = {"container": container_id}
 
-        if feedback is None:
-            flash("Container {} was successfully unpaused".format(container_id), SUCCESS)
-        else:
-            flash(feedback, WARNING)
-
-    except APIError as e:
-        flash(e.explanation, ERROR)
-
+    handle_action(action, args, success_message)
     return redirect(url_for("container.list_containers"))
 
 
 @container.route("/<container_id>/stop", methods=["GET"])
 def stop_container(container_id):
     """
-    Stop container from running
+    Stop a running container
+    :param container_id: Id of the container to stop
+    :return:
     """
-    try:
-        feedback = g.docker_client.stop(container_id)
-        if feedback is None:
-            flash("Container {} was successfully stopped".format(container_id), SUCCESS)
-        else:
-            flash(feedback, WARNING)
+    action = g.docker_client.stop
+    success_message = "Container {} was successfully stopped!".format(container_id)
+    args = {"container": container_id}
 
-    except APIError as e:
-        flash(e.explanation, ERROR)
-
+    handle_action(action, args, success_message)
     return redirect(url_for("container.list_containers"))
 
 
@@ -149,10 +122,8 @@ def stop_container(container_id):
 def create_container():
     """
     Create a new container based on an image
-
-    @TODO:
-        Add more properties. Should atleast match the API
-
+    :todo: Add more properties. Should at least match the API
+    :return:
     """
     container_name = request.form["container_name"]
     image = request.form["image"]
@@ -172,9 +143,30 @@ def create_container():
 
             if action == "create_and_start":
                 feedback = g.docker_client.start(container_id)
+
                 if feedback is None:
                     flash("Container {} was successfully started".format(container_id), SUCCESS)
                 else:
                     flash(feedback, WARNING)
 
     return redirect(url_for("container.list_containers"))
+
+
+def handle_action(func, args, success_message):
+    """
+    Apply the func with the given args.
+    :param func: Function to run
+    :param args: Arguments to function
+    :param success_message: Success message
+    :return:
+    """
+    try:
+        feedback = func(**args)
+
+        if feedback is None:
+            flash(success_message, SUCCESS)
+        else:
+            flash(feedback, WARNING)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
