@@ -50,7 +50,8 @@ def inspect_image(image_id):
     View detailed information about the image
     """
     entry = g.docker_client.inspect_image(image_id)
-    return render_template("image/entry.html", image=entry)
+    history = g.docker_client.history(image_id)
+    return render_template("image/entry.html", image=entry, history=history)
 
 
 # Search image

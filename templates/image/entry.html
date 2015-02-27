@@ -14,19 +14,56 @@
 {% block main %}
 
     <h1 class="page-header">{{ image.Name }}</h1>
-
     <h3>{{ image.Id }}</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            {% for arg in image %}
-                <tr>
-                    <td>{{ arg }}</td>
-                    <td>{{ image[arg] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#info" data-toggle="tab" aria-expanded="true">Info</a></li>
+        <li class=""><a href="#history" data-toggle="tab" aria-expanded="false">History</a></li>
+    </ul>
+
+    <div class="tab-content active">
+        {# Image information #}
+        <div class="tab-pane active" id="info">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    {% for arg in image %}
+                        <tr>
+                            <td>{{ arg }}</td>
+                            <td>{{ image[arg] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {# Image history #}
+        <div class="tab-pane" id="history">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Created</th>
+                        <th>Created by</th>
+                        <th>Size</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for history_entry in history %}
+                        <tr>
+                            <td>{{ history_entry.Id | truncate(16, True) }}</td>
+                            <td>{{ history_entry.Created | date_string }}</td>
+                            <td>{{ history_entry.CreatedBy }}</td>
+                            <td>{{ history_entry.Size | b_to_mb }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
