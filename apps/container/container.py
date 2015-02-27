@@ -103,6 +103,21 @@ def unpause_container(container_id):
     return redirect(url_for("container.list_containers"))
 
 
+@container.route("/<container_id>/restart", methods=["GET"])
+def restart_container(container_id):
+    """
+    Restart a container
+    :param container_id: Id of the container to restarted
+    :return:
+    """
+    action = g.docker_client.restart
+    success_message = "Container {} was successfully restarted!".format(container_id)
+    args = {"container": container_id}
+
+    handle_action(action, args, success_message)
+    return redirect(url_for("container.list_containers"))
+
+
 @container.route("/<container_id>/stop", methods=["GET"])
 def stop_container(container_id):
     """
