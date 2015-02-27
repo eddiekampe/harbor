@@ -22,7 +22,7 @@
                         <div class="col-lg-10">
                             <select class="form-control" name="image">
                                 {% for image in images %}
-                                    <option value="{{ image.RepoTags | first }}">{{ image.RepoTags | first }}</option>
+                                    <option value="{{ image.Id }}">{{ image.RepoTags | first }}</option>
                                 {% endfor %}
                             </select>
                         </div>
