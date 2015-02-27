@@ -133,6 +133,21 @@ def stop_container(container_id):
     return redirect(url_for("container.list_containers"))
 
 
+@container.route("/<container_id>/kill", methods=["GET"])
+def kill_container(container_id):
+    """
+    Kill a running container (SIGKILL signal).
+    :param container_id: Id of the container to kill
+    :return:
+    """
+    action = g.docker_client.kill
+    success_message = "Container {} was successfully killed!".format(container_id)
+    args = {"container": container_id}
+
+    handle_action(action, args, success_message)
+    return redirect(url_for("container.list_containers"))
+
+
 @container.route("/", methods=["POST"])
 def create_container():
     """

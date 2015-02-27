@@ -81,6 +81,12 @@
                                     Restart
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url_for("container.kill_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-fire text-danger" aria-hidden="true"></span>
+                                    Kill
+                                </a>
+                            </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="{{ url_for("container.delete_container", container_id=container.Id) }}">
