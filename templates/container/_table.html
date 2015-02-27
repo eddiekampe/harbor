@@ -52,23 +52,36 @@
                         <ul class="dropdown-menu pull-right">
                             <li>
                                 <a href="{{ url_for("container.start_container", container_id=container.Id) }}">
-                                    <span class="glyphicon glyphicon-play succes text-success" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-play text-success" aria-hidden="true"></span>
                                     Start
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ url_for("container.stop_container", container_id=container.Id) }}">
-                                    <span class="glyphicon glyphicon-off text-warning" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-off text-danger" aria-hidden="true"></span>
                                     Stop
                                 </a>
                             </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ url_for("container.pause_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-pause text-warning" aria-hidden="true"></span>
+                                    Pause
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("container.unpause_container", container_id=container.Id) }}">
+                                    <span class="glyphicon glyphicon-repeat text-success" aria-hidden="true"></span>
+                                    Unpause
+                                </a>
+                            </li>
+                            <li class="divider"></li>
                             <li>
                                 <a href="{{ url_for("container.delete_container", container_id=container.Id) }}">
                                     <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>
                                     Delete
                                 </a>
                             </li>
-                            <li class="divider"></li>
                             <li>
                                 <a href="{{ url_for("container.delete_container", container_id=container.Id) }}?force=True">
                                     <span class="glyphicon glyphicon-remove-sign text-danger" aria-hidden="true"></span>

@@ -67,13 +67,57 @@ def delete_container(container_id):
 @container.route("/<container_id>/start", methods=["GET"])
 def start_container(container_id):
     """
-    Start container
+    Start an idle container
+    :param container_id: Id of the container to start
+    :return:
     """
     try:
         feedback = g.docker_client.start(container_id)
 
         if feedback is None:
             flash("Container {} was successfully started".format(container_id), SUCCESS)
+        else:
+            flash(feedback, WARNING)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
+
+    return redirect(url_for("container.list_containers"))
+
+
+@container.route("/<container_id>/pause", methods=["GET"])
+def pause_container(container_id):
+    """
+    Pause a running container
+    :param container_id: Id of the container to pause
+    :return:
+    """
+    try:
+        feedback = g.docker_client.pause(container_id)
+
+        if feedback is None:
+            flash("Container {} was successfully paused".format(container_id), SUCCESS)
+        else:
+            flash(feedback, WARNING)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
+
+    return redirect(url_for("container.list_containers"))
+
+
+@container.route("/<container_id>/unpause", methods=["GET"])
+def unpause_container(container_id):
+    """
+    Resume a paused container
+    :param container_id: Id of the container to unpause
+    :return:
+    """
+    try:
+        feedback = g.docker_client.unpause(container_id)
+
+        if feedback is None:
+            flash("Container {} was successfully unpaused".format(container_id), SUCCESS)
         else:
             flash(feedback, WARNING)
 
