@@ -119,3 +119,7 @@ textarea {
     background: #000000;
     color: #ffffff;
 }
+
+.modal-dialog {
+    width: 1000px;
+}

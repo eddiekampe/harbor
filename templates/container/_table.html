@@ -39,7 +39,7 @@
                     {% for port in container.Ports %}
                         {% if "PublicPort" in port %}
                             <div>
-                                <a href="http://{{ port["IP"] }}:{{ port["PublicPort"] }}">
+                                <a href="http://{{ port["IP"] }}:{{ port["PublicPort"] }}" target="_blank">
                                     {{ port["Type"] }}:{{ port["PrivatePort"] }} -> {{ port["IP"] }}:{{ port["PublicPort"] }}
                                 </a>
                             </div>

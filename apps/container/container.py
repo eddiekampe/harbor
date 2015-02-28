@@ -160,20 +160,30 @@ def create_container():
     image = request.form["image"]
     action = request.form["action"]
     scale = int(request.form["scale"])
+    # Ports
+    protocol = request.form["protocol"]
+    ip_address = request.form["ip_address"]
+    host_port = request.form["host_port"]
+    container_port = request.form["container_port"]
+
+    port_bindings = {
+        container_port: (ip_address, host_port)
+    }
 
     if None not in [image, container_name, scale]:
 
         for instance in range(scale):
 
             if scale > 1 and container_name != "":
-                container_id = g.docker_client.create_container(image=image, name="{}-{}".format(container_name, instance + 1))
+                container_id = g.docker_client.create_container(image=image,
+                                                                name="{}-{}".format(container_name, instance + 1))
             else:
                 container_id = g.docker_client.create_container(image=image)
 
             flash("Container {} was successfully created".format(container_id), SUCCESS)
 
             if action == "create_and_start":
-                feedback = g.docker_client.start(container_id)
+                feedback = g.docker_client.start(container_id, port_bindings=port_bindings)
 
                 if feedback is None:
                     flash("Container {} was successfully started".format(container_id), SUCCESS)

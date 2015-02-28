@@ -12,14 +12,14 @@
                     {# Name #}
                     <div class="form-group">
                         <label for="container_name" class="col-lg-2 control-label">Name</label>
-                        <div class="col-lg-10">
+                        <div class="col-lg-8">
                             <input type="text" class="form-control" name="container_name" placeholder="Leave empty for a random name">
                         </div>
                     </div>
                     {# Image #}
                     <div class="form-group">
                         <label for="image" class="col-lg-2 control-label">Image</label>
-                        <div class="col-lg-10">
+                        <div class="col-lg-8">
                             <select class="form-control" name="image">
                                 {% for image in images %}
                                     <option value="{{ image.Id }}">{{ image.RepoTags | first }}</option>
@@ -27,10 +27,10 @@
                             </select>
                         </div>
                     </div>
-                    {# NUmber of instances #}
+                    {# Number of instances #}
                     <div class="form-group">
                         <label for="scale" class="col-lg-2 control-label">Scale</label>
-                        <div class="col-lg-10">
+                        <div class="col-lg-8">
                             <select class="form-control" name="scale">
                                 {% for index in range(5) %}
                                     <option>{{ index + 1 }}</option>
@@ -38,6 +38,33 @@
                             </select>
                         </div>
                     </div>
+                    {# Port bindings #}
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Ports</label>
+                        <div class="col-lg-4">
+                            <label class="control-label" for="protocol">Protocol</label>
+                            <select class="form-control" name="protocol">
+                                <option>TCP</option>
+                                <option>UDP</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="control-label" for="ip_address">IP Address</label>
+                            <input class="form-control" name="ip_address" type="text" value="0.0.0.0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"></label>
+                        <div class="col-lg-4">
+                            <label class="control-label" for="host_port">Host port</label>
+                            <input class="form-control" name="host_port" type="text" value="8000">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="control-label" for="container_port">Container port</label>
+                            <input class="form-control" name="container_port" type="text" value="8000">
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
