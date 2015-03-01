@@ -11,17 +11,16 @@ Harbor is a tool that gives you a quick and clean overview for your Docker conta
 ## Usage
 To setup Harbor:
 
-1. Create new virtual environment 
-```
+**Create new virtual environment**
+```bash
 virtualenv <env_name>; source <env_name>/bin/activate
 ```
-
-2. Install requirements 
-```
+**Install requirements**
+```bash
 pip install -r requirements.txt
 ```
-3. Run the application. 
-```
+**Run the application**
+```bash
 python harbor.py
 ```
 
