@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% set nav="overview" %}
+
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li class="active">Search</li>
+    </ul>
+
+{% endblock %}
+
+{% block main %}
+
+    <h1 class="page-header">Search result for "{{ search_string }}"</h1>
+
+    {% if containers %}
+
+        <h3>Containers</h3>
+        {% for container in containers %}
+            <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
+                {{ container.Id | truncate(16, True) }} ({{ container.Image }})
+            </a>
+        {% endfor %}
+
+    {% endif %}
+
+    {% if images %}
+
+        <h3>Images</h3>
+        {% for image in images %}
+            <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
+                {{ image.Id|truncate(16, True) }} ({{ image.RepoTags | first }})
+            </a>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

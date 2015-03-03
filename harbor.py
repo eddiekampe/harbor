@@ -2,7 +2,7 @@ import traceback
 from docker import Client
 import os
 
-from flask import Flask, url_for, redirect, send_from_directory, json, render_template, g
+from flask import Flask, url_for, redirect, send_from_directory, json, render_template, g, request
 
 from apps.image.image import image
 from apps.container.container import container
@@ -44,11 +44,31 @@ def prepare_request():
     return dict(num_images=len(images), num_containers=len(containers))
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def overview():
+    """
+    Landing page, display info about the host
+    """
     version = g.docker_client.version()
     info = g.docker_client.info()
     return render_template("overview.html", version=version, info=info)
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    """
+    Searches containers and images for a match.
+
+    :todo: Improve matching comparison. Maybe Regex matching?
+    """
+    search_string = request.form["search_string"]
+    containers = g.docker_client.containers(all=True)
+    images = g.docker_client.images()
+
+    images = [img for img in images if search_string in img.get("RepoTags")]
+    containers = [cont for cont in containers if search_string in cont.get("Image")]
+
+    return render_template("search.html", search_string=search_string, images=images, containers=containers)
 
 
 @app.route("/about")
