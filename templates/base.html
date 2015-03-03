@@ -38,8 +38,8 @@
                 <li><a href="#">Help</a></li>
                 #}
             </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search... (image/container)">
+            <form id="search" class="navbar-form navbar-right" method="POST" action="{{ url_for("search") }}">
+                <input type="text" name="search_string" class="form-control" placeholder="Search... (image/container)">
             </form>
         </div>
     </div>
