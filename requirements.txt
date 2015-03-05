@@ -5,7 +5,7 @@ Werkzeug==0.9.6
 argparse==1.2.1
 backports.ssl-match-hostname==3.4.0.2
 bson==0.3.3
-distribute==0.6.34
+distribute==0.7.3
 docker-py==1.0.0
 itsdangerous==0.24
 pytz==2014.10
