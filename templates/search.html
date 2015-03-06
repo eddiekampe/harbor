@@ -18,9 +18,24 @@
 
         <h3>Containers</h3>
         {% for container in containers %}
-            <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">
-                {{ container.Id | truncate(16, True) }} ({{ container.Image }})
-            </a>
+            <div class="list-group">
+                <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}" class="list-group-item">
+                    <h4 class="list-group-item-heading">
+                        {{ container.Names | first }} ({{ container.Image }})
+                    </h4>
+                    <p class="list-group-item-text">
+                        {% if "Up" in container.Status %}
+                            <span class="glyphicon glyphicon-play text-success" aria-hidden="true"></span>
+                            <span class="text-success">{{ container.Status }}</span>
+                        {% elif "Exited" in container.Status %}
+                            <span class="glyphicon glyphicon-stop text-danger" aria-hidden="true"></span>
+                            <span class="text-danger">{{ container.Status }}</span>
+                        {% else %}
+                            <span></span>
+                        {% endif %}
+                    </p>
+                </a>
+            </div>
         {% endfor %}
 
     {% endif %}
@@ -29,9 +44,21 @@
 
         <h3>Images</h3>
         {% for image in images %}
-            <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
-                {{ image.Id|truncate(16, True) }} ({{ image.RepoTags | first }})
-            </a>
+
+            <div class="list-group">
+                <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}" class="list-group-item">
+                    <h4 class="list-group-item-heading">
+                        {{ image.RepoTags | first }}
+                        ({{ image.Id }})
+                    </h4>
+                    <p class="list-group-item-text">
+                        <span>
+                            Created: {{ image.Created | date_string }}
+                        </span>
+                    </p>
+                </a>
+            </div>
+
         {% endfor %}
 
     {% endif %}
