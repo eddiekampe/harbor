@@ -4,27 +4,18 @@
 Harbor is a tool that gives you a quick and clean overview for your Docker containers.
 
 ## Requirements
-* Python 2.7
-* Virtualenv
 * Docker
 
 ## Usage
-To setup Harbor:
+To run Harbor, issue the following command:
 
-**Create new virtual environment**
 ```bash
-virtualenv <env_name>; source <env_name>/bin/activate
-```
-**Install requirements**
-```bash
-pip install -r requirements.txt
-```
-**Run the application**
-```bash
-python harbor.py
+docker run -p 5000:5000 -v /var/run/docker.sock:/var/run/docker.sock eddiekampe/harbor
 ```
 
-The application is now accessible on http://localhost:5000/
+The application is now accessible on http://<host_ip>:5000/
+
+**Note that you can change the host port if required**
 
 ## Credits
 Build using <a href="https://github.com/docker/docker-py">docker-py</a>.
