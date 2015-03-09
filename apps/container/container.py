@@ -16,6 +16,13 @@ def list_containers():
     try:
         containers = g.docker_client.containers(all=True)
         images = g.docker_client.images()
+        for image in images:
+
+            image_info = g.docker_client.inspect_image(image.get("Id"))
+            exposed_ports = image_info.get("Config", {}).get("ExposedPorts")
+
+            if exposed_ports:
+                image["Port"], image["Protocol"] = tuple(exposed_ports.keys()[0].split("/"))
 
     except APIError as e:
         flash(e.explanation, ERROR)
@@ -30,8 +37,23 @@ def inspect_container(container_id):
     """
     try:
         entry = g.docker_client.inspect_container(container_id)
+        return render_template("container/entry/_info.html", container=entry)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
+
+    return redirect(url_for("container.list_containers"))
+
+
+@container.route("/<container_id>/logs", methods=["GET"])
+def container_logs(container_id):
+    """
+    View logs originating from the container
+    """
+    try:
         logs = g.docker_client.logs(container_id, stdout=True, stderr=True)
-        return render_template("container/entry.html", container=entry, logs=logs)
+        container_entry = {"Id": container_id}
+        return render_template("container/entry/_logs.html", logs=logs, container=container_entry)
 
     except APIError as e:
         flash(e.explanation, ERROR)

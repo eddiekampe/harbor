@@ -1,0 +1,20 @@
+{% extends "container/entry/base.html" %}
+{% set subnav="info" %}
+
+{% block container_data %}
+
+    {# Container information #}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="panel-body">
+            {% for arg in container | sort %}
+                <div>
+                    <strong>{{ arg }}: </strong>{{ container[arg] }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

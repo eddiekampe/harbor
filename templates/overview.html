@@ -13,32 +13,30 @@
 
     <h1 class="page-header">Overview</h1>
 
-    <h3>Version</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            {% for arg in version %}
-                <tr>
-                    <td>{{ arg }}</td>
-                    <td>{{ version[arg] }}</td>
-                </tr>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Version</h3>
+        </div>
+        <div class="panel-body">
+            {% for arg in version | sort %}
+                <div>
+                    <strong>{{ arg }}: </strong>{{ version[arg] }}
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     </div>
 
-    <h3>Info</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            {% for arg in info %}
-                <tr>
-                    <td>{{ arg }}</td>
-                    <td>{{ info[arg] }}</td>
-                </tr>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Information</h3>
+        </div>
+        <div class="panel-body">
+            {% for arg in info | sort %}
+                <div>
+                    <strong>{{ arg }}: </strong>{{ info[arg] }}
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     </div>
 
 {% endblock %}

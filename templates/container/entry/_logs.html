@@ -1,0 +1,16 @@
+{% extends "container/entry/base.html" %}
+{% set subnav="logs" %}
+
+{% block container_data %}
+
+    {# Container logs #}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="panel-body">
+            <textarea>{{ logs | log_text }}</textarea>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set nav="container" %}
+
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li><a href="{{ url_for("container.list_containers") }}">Containers</a></li>
+        <li class="active">{{ container.Id }}</li>
+    </ul>
+
+{% endblock %}
+
+{% block main %}
+
+    <h3 class="page-header">{{ container.Id }}</h3>
+
+    <ul class="nav nav-pills">
+        <li{% if subnav == "info" %} class="active"{% endif %}>
+            <a href="{{ url_for("container.inspect_container", container_id=container.Id) }}">Info</a>
+        </li>
+        <li{% if subnav == "logs" %} class="active"{% endif %}>
+            <a href="{{ url_for("container.container_logs", container_id=container.Id) }}">Logs</a>
+        </li>
+    </ul>
+
+    {% block container_data %}{% endblock %}
+
+{% endblock %}
