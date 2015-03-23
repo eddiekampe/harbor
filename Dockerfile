@@ -1,10 +1,12 @@
 FROM python:2.7-slim
 MAINTAINER Eddie Kämpe <eddiek@kth.se>
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN apt-get update && \
+    apt-get install -y git
 
-COPY . .
+RUN git clone https://github.com/eddiekampe/harbor.git /opt/harbor
+WORKDIR /opt/harbor
+
 RUN pip install -r requirements.txt
 
 EXPOSE 5000

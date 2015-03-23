@@ -1,12 +1,14 @@
-import traceback
-from docker import Client
 import os
+import traceback
+import subprocess
+import lib.notification as notification
 
-from flask import Flask, url_for, redirect, send_from_directory, json, render_template, g, request
-
+from docker import Client
+from flask import Flask, url_for, redirect, send_from_directory, render_template, g, request, flash
 from apps.image.image import image
 from apps.container.container import container
 from lib import filters
+
 
 # Setup application and config
 app = Flask(__name__)
@@ -38,7 +40,9 @@ def server_error(error):
 
 @app.context_processor
 def prepare_request():
-    # Fetch number of images and containers
+    """
+    Fetch number of images and containers
+    """
     images = g.docker_client.images(quiet=True)
     containers = g.docker_client.containers(quiet=True, all=True)
     return dict(num_images=len(images), num_containers=len(containers))
@@ -71,19 +75,21 @@ def search():
     return render_template("search.html", search_string=search_string, images=images, containers=containers)
 
 
-@app.route("/about")
-def about():
-    return 501
+@app.route("/update")
+def update_project():
+    """
+    Pull the latest changes from GitHub
+    """
+    output = subprocess.check_output(["git", "pull"])
+    # TODO: Need to parse the output to see what was the result
+    flash(output, notification.SUCCESS)
+
+    return redirect(url_for("overview"))
 
 
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(os.path.join(app.root_path, "static"), "images/favicon.ico")
-
-
-@app.route("/environment")
-def get_environment():
-    return json.dumps({"configuration": "dev"})
 
 
 if __name__ == "__main__":
