@@ -18,3 +18,24 @@
     {% include "container/_table.html" with context %}
 
 {% endblock %}
+
+{% block footer_script %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("select[name='image']").on("change", function () {
+
+                var selectedOption = $("option:selected", this),
+                    port = selectedOption.data("port"),
+                    protocol = selectedOption.data("protocol");
+
+                $("input[name='container_port'], input[name='host_port']").val(port);
+                $("option[value='" + protocol + "'").prop("selected", true);
+            });
+
+        });
+    </script>
+
+{% endblock %}

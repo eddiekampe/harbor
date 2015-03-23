@@ -22,7 +22,13 @@
                         <div class="col-lg-8">
                             <select class="form-control" name="image">
                                 {% for image in images %}
-                                    <option value="{{ image.Id }}">{{ image.RepoTags | first }}</option>
+                                    {% if image.Port %}
+                                        <option name="image" value="{{ image.Id }}"
+                                                data-port="{{ image.Port }}"
+                                                data-protocol="{{ image.Protocol }}">{{ image.RepoTags | first }}</option>
+                                    {% else %}
+                                        <option name="image" value="{{ image.Id }}">{{ image.RepoTags | first }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -44,8 +50,8 @@
                         <div class="col-lg-4">
                             <label class="control-label" for="protocol">Protocol</label>
                             <select class="form-control" name="protocol">
-                                <option>TCP</option>
-                                <option>UDP</option>
+                                <option value="tcp">TCP</option>
+                                <option value="udp">UDP</option>
                             </select>
                         </div>
                         <div class="col-lg-4">

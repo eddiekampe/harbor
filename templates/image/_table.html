@@ -18,7 +18,7 @@
             <tr>
                 <td>
                     <a href="{{ url_for("image.inspect_image", image_id=image.Id) }}">
-                        {{ image.Id|truncate(16, True) }}
+                        {{ image.Id | truncate(16, True) }}
                     </a>
                 </td>
                 <td>{{ image.RepoTags | first }}</td>
