@@ -93,4 +93,12 @@ def favicon():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", use_reloader=True, threaded=True)
+
+    config = {
+        "host": "0.0.0.0",
+        "debug": bool(os.environ.get("HARBOR_DEBUG", False)),
+        "use_reloader": True,
+        "threaded": True
+    }
+
+    app.run(**config)
