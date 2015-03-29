@@ -57,7 +57,6 @@ def process_text(processes):
         readable_process = "\t\t".join(process_attributes)
         readable_processes.append(readable_process)
 
-    print readable_titles
     readable_processe = "\n".join(readable_processes)
 
     return readable_titles + "\n" + readable_processe
