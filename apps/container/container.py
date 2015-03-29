@@ -61,6 +61,22 @@ def container_logs(container_id):
     return redirect(url_for("container.list_containers"))
 
 
+@container.route("/<container_id>/processes", methods=["GET"])
+def container_processes(container_id):
+    """
+    View top processes running inside the container
+    """
+    try:
+        processes = g.docker_client.top(container_id)
+        container_entry = {"Id": container_id}
+        return render_template("container/entry/_processes.html", processes=processes, container=container_entry)
+
+    except APIError as e:
+        flash(e.explanation, ERROR)
+
+    return redirect(url_for("contaienr.list_containers"))
+
+
 @container.route("/<container_id>/delete", methods=["GET"])
 def delete_container(container_id):
     """
@@ -187,6 +203,7 @@ def create_container():
     ip_address = request.form["ip_address"]
     host_port = request.form["host_port"]
     container_port = request.form["container_port"]
+    privileged_mode = request.form.get("privileged_mode", False)
 
     port_bindings = {
         container_port: (ip_address, host_port)
@@ -205,7 +222,7 @@ def create_container():
             flash("Container {} was successfully created".format(container_id), SUCCESS)
 
             if action == "create_and_start":
-                feedback = g.docker_client.start(container_id, port_bindings=port_bindings)
+                feedback = g.docker_client.start(container_id, port_bindings=port_bindings, privileged=privileged_mode)
 
                 if feedback is None:
                     flash("Container {} was successfully started".format(container_id), SUCCESS)
