@@ -5,6 +5,7 @@ def register(app):
     app.jinja_env.filters["b_to_mb"] = b_to_mb
     app.jinja_env.filters["date_string"] = date_string
     app.jinja_env.filters["log_text"] = log_text
+    app.jinja_env.filters["process_text"] = process_text
 
 
 def b_to_mb(byte_string):
@@ -37,3 +38,26 @@ def log_text(logs):
                    ("[90m", "")
 
     return reduce(lambda in_string, kv: in_string.replace(*kv), replacements, logs)
+
+
+def process_text(processes):
+    """
+    Format docker process list into a readable format
+    :param processes: Processes
+    :return: Cleaned version of the processes
+    """
+
+    titles = processes.get("Titles", [])
+    processes = processes.get("Processes", [])
+
+    readable_titles = "\t\t\t".join(titles)
+    readable_processes = []
+
+    for process_attributes in processes:
+        readable_process = "\t\t".join(process_attributes)
+        readable_processes.append(readable_process)
+
+    print readable_titles
+    readable_processe = "\n".join(readable_processes)
+
+    return readable_titles + "\n" + readable_processe
