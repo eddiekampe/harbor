@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set nav="settings" %}
+
+{% block breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for("overview") }}">Home</a></li>
+        <li class="active">Settings</li>
+    </ul>
+
+{% endblock %}
+
+{% block main %}
+
+    <h1 class="page-header">Settings</h1>
+
+    <a href="{{ url_for("update_project") }}" class="btn btn-primary">Update</a>
+    <hr />
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Version</h3>
+        </div>
+        <div class="panel-body">
+            {{ client_address }}
+        </div>
+
+    </div>
+    <form id="new_container" class="form-horizontal" method="POST" action="{{ url_for("settings") }}">
+
+        {# Client address #}
+        <div class="form-group">
+            <label for="client_address" class="control-label">Client address</label>
+            <input type="text" class="form-control" name="client_address" placeholder="unix:///var/run/docker.sock">
+        </div>
+
+        <button name="action" type="submit" form="new_container" class="btn btn-primary">Change host</button>
+
+    </form>
+
+{% endblock %}

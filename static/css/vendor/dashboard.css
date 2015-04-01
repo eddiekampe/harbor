@@ -118,6 +118,7 @@ textarea {
     max-width: 100%;
     background: #000000;
     color: #ffffff;
+    font-size: 13px;
 }
 
 .modal-dialog {

@@ -1,5 +1,6 @@
+import json
 from docker.errors import APIError
-from flask import Blueprint, render_template, redirect, url_for, flash, request, g
+from flask import Blueprint, render_template, redirect, url_for, flash, request, g, Response
 from lib.notification import SUCCESS, ERROR, WARNING
 
 container = Blueprint("container", __name__)
@@ -75,6 +76,32 @@ def container_processes(container_id):
         flash(e.explanation, ERROR)
 
     return redirect(url_for("contaienr.list_containers"))
+
+
+@container.route("/<container_id>/stats", methods=["GET"])
+def stats(container_id):
+    """
+    Display stats for the container
+    """
+    container_entry = {"Id": container_id}
+    return render_template("container/entry/_stats.html", container=container_entry)
+
+
+@container.route("/<container_id>/stats/feed")
+def stats_feed(container_id):
+    """
+    Generator that continously report stats about a container
+    """
+    def stats_stream():
+
+        from docker import Client
+        docker_client = Client(base_url="unix://var/run/docker.sock")
+
+        stats_generator = docker_client.stats(container_id)
+        for stat in stats_generator:
+            yield "data: {}\n\n".format(json.dumps(stat))
+
+    return Response(stats_stream(), mimetype="text/event-stream")
 
 
 @container.route("/<container_id>/delete", methods=["GET"])

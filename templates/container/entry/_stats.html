@@ -1,0 +1,47 @@
+{% extends "container/entry/base.html" %}
+{% set subnav="stats" %}
+
+{% block container_data %}
+
+    {# Container information #}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="panel-body">
+            {# TODO: Show some pretty graphs #}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_script %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // Retrieve feed from stats generator
+
+            var stream_url = "{{ url_for('container.stats_feed', container_id=container.Id) }}",
+                source = new EventSource(stream_url);
+
+            console.log(stream_url);
+
+            // Register event listener to Server Sent Events (SSE)
+            // More information about the technique can be found here:
+            // http://www.w3schools.com/htmL/html5_serversentevents.asp
+            source.onmessage = function (event) {
+
+                var parsed = JSON.parse(event.data);
+                if (parsed.status == "COMPLETE") {
+                    console.log("Closing");
+                    source.close();
+                } else {
+                    console.log(parsed);
+                }
+            };
+
+        });
+    </script>
+
+{% endblock %}

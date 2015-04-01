@@ -25,6 +25,9 @@
         <li{% if subnav == "processes" %} class="active"{% endif %}>
             <a href="{{ url_for("container.container_processes", container_id=container.Id) }}">Processes</a>
         </li>
+        <li{% if subnav == "stats" %} class="active"{% endif %}>
+            <a href="{{ url_for("container.stats", container_id=container.Id) }}">Statistics</a>
+        </li>
     </ul>
 
     {% block container_data %}{% endblock %}

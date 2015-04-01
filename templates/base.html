@@ -61,6 +61,9 @@
             </ul>
 
             <ul class="nav nav-sidebar">
+                <li{% if nav == "settings" %} class="active"{% endif %}>
+                    <a href="{{ url_for("settings") }}">Settings</a>
+                </li>
                 <li><a href="https://github.com/eddiekampe/harbor/issues" target="_blank">Issues</a></li>
             </ul>
 

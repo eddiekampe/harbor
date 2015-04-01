@@ -22,7 +22,8 @@ filters.register_all(app)
 
 @app.before_request
 def setup():
-    g.docker_client = Client(base_url="unix://var/run/docker.sock")
+    g.docker_client_address = DOCKER_CLIENT_ADDRESS = "unix://var/run/docker.sock"
+    g.docker_client = Client(base_url=DOCKER_CLIENT_ADDRESS)
 
 
 @app.errorhandler(404)
@@ -45,7 +46,17 @@ def prepare_request():
     """
     images = g.docker_client.images(quiet=True)
     containers = g.docker_client.containers(quiet=True, all=True)
-    return dict(num_images=len(images), num_containers=len(containers))
+    events = []
+
+    def get_events():
+
+        events_generator = g.docker_client.events()
+        for event in events_generator:
+            yield event
+
+    # events = get_events()
+
+    return dict(num_images=len(images), num_containers=len(containers), events=events, docker_client=g.docker_client_address)
 
 
 @app.route("/", methods=["GET"])
@@ -75,7 +86,7 @@ def search():
     return render_template("search.html", search_string=search_string, images=images, containers=containers)
 
 
-@app.route("/update")
+@app.route("/update", methods=["GET"])
 def update_project():
     """
     Pull the latest changes from GitHub
@@ -84,7 +95,20 @@ def update_project():
     # TODO: Need to parse the output to see what was the result
     flash(output, notification.SUCCESS)
 
-    return redirect(url_for("overview"))
+    return redirect(url_for("settings"))
+
+
+@app.route("/client", methods=["GET", "POST"])
+def settings():
+    """
+    Display host settings.
+    Also end-point for updates
+    """
+    if request.method == "POST":
+        print "POST"
+
+    docker_client_address = g.docker_client.base_url
+    return render_template("settings.html", client_address=docker_client_address)
 
 
 @app.route("/favicon.ico")
